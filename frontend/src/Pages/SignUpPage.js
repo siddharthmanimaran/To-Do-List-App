@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 // import axios from "axios";
 import { useHistory, Link } from "react-router-dom";
+import axios from "axios";
 
 function SignUpPage() {
   let history = useHistory();
@@ -29,18 +30,18 @@ function SignUpPage() {
 
     console.log(userData);
 
-    // axios
-    //   .post("http://localhost:4000/keeper/signUp", userData)
-    //   .then((res) => {
-    //     if (res.status === 200) {
-    //       history.push("/");
+    axios
+      .post("http://localhost:4000/ToDoList/signUp", userData)
+      .then((res) => {
+        if (res.status === 200) {
+          history.push("/");
 
-    //       alert(JSON.stringify(res));
-    //     } else {
-    //       alert("fill the form");
-    //     }
-    //   })
-    //   .catch((err) => {});
+          alert(JSON.stringify(res));
+        } else {
+          alert("fill the form");
+        }
+      })
+      .catch((err) => {});
     setUserData({
       firstName: "",
       lastName: "",

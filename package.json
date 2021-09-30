@@ -2,7 +2,7 @@
   "name": "to-do-list-app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "ToDoList.model.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +15,16 @@
   "bugs": {
     "url": "https://github.com/siddharthmanimaran/To-Do-List-App/issues"
   },
-  "homepage": "https://github.com/siddharthmanimaran/To-Do-List-App#readme"
+  "homepage": "https://github.com/siddharthmanimaran/To-Do-List-App#readme",
+  "dependencies": {
+    "axios": "^0.21.4",
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^6.0.8"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.13"
+  }
 }

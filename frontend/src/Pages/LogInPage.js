@@ -51,7 +51,7 @@ export default function LogInPage() {
             value={userData.userName}
             onChange={handleChange}
           />
-          {/* <br /> */}
+
           <label htmlFor="password">Password:</label>
           <input
             type="password"
