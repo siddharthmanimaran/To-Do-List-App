@@ -9,6 +9,7 @@ const bcrypt = require("bcrypt");
 
 const List = require("./ToDoList.model");
 const newUser = require("./SignUp.model");
+const user = require("./logIn.model");
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -35,7 +36,6 @@ ToDoListRoutes.post("/signUp", async (req, res) => {
   newuser
     .save()
     .then((x) => {
-      console.log("added success");
       res.status(200).json({ newuser: "user added successfully" });
     })
     .catch((err) => {
@@ -44,6 +44,45 @@ ToDoListRoutes.post("/signUp", async (req, res) => {
     });
 });
 
+ToDoListRoutes.route("/logIn").post((req, res) => {
+  console.log("login--->", req.body);
+
+  newUser.find({ userName: req.body.userName }, function (err, person) {
+    console.log("body--->", person);
+    if (err) {
+      res.status(400).send("service not available");
+    }
+    if (person.length) {
+      const userDetails = person[0];
+      bcrypt
+        .compare(req.body.password, userDetails.password)
+        .then((confirmPassword) => {
+          console.log("Confirm passed result--->", confirmPassword);
+          if (confirmPassword) {
+            res.json({
+              success: true,
+              userDetails: userDetails,
+            });
+          } else {
+            res.json({
+              success: false,
+              message: "Invalid password",
+            });
+          }
+        })
+        .catch((err) => {
+          console.log("Error while password check");
+        });
+    } else {
+      res.json({
+        success: false,
+        message: "User not found",
+      });
+    }
+  });
+});
+
+app.use("/ToDoList", ToDoListRoutes);
 app.use("/signUp", ToDoListRoutes);
-// app.use("/logIn", ToDoListRoutes);
+app.use("/logIn", ToDoListRoutes);
 app.listen(PORT, console.log(`Server started at port ${PORT}`));

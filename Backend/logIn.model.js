@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-let newUser = new Schema({
+let user = new Schema({
   userName: {
     type: String,
     required: true,
@@ -12,4 +12,4 @@ let newUser = new Schema({
   },
 });
 
-module.exports = mongoose.model("newUser", newUser);
+module.exports = mongoose.model("user", user);

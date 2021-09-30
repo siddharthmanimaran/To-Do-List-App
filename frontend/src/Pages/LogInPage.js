@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useHistory, Link } from "react-router-dom";
+import axios from "axios";
 
 export default function LogInPage() {
   let history = useHistory();
@@ -20,17 +21,17 @@ export default function LogInPage() {
   function handleSubmit(event) {
     event.preventDefault();
     console.log(userData);
-    // axios
-    //   .post("http://localhost:4000/keeper/logIn", userData)
-    //   .then((res) => {
-    //     console.log("response from back", res);
-    //     if (res.data.success) {
-    //       history.push(`/MainPage/${res.data.userDetails._id}`);
-    //     } else {
-    //       alert(res.data.message);
-    //     }
-    //   })
-    //   .catch((err) => {});
+    axios
+      .post("http://localhost:4000/ToDoList/logIn", userData)
+      .then((res) => {
+        console.log("response from back", res);
+        if (res.data.success) {
+          history.push(`/MainPage/${res.data.userDetails._id}`);
+        } else {
+          alert(res.data.message);
+        }
+      })
+      .catch((err) => {});
     setUserData({
       userName: "",
       password: "",

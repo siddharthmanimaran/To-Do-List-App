@@ -8,6 +8,7 @@ let newUser = new Schema({
   },
   lastName: {
     type: String,
+    required: true,
   },
   userName: {
     type: String,
