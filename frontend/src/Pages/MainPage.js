@@ -1,19 +1,59 @@
+import axios from "axios";
 import React, { useState } from "react";
 import ToDoItem from "../components/ToDoItem";
 
-function MainPage() {
-  const [inputText, setInputText] = useState("");
+function MainPage(props) {
+  const [inputText, setInputText] = useState({
+    list: "",
+  });
   const [items, setItems] = useState([]);
+  const [savedlist, setSavedList] = useState([]);
+  const userId = props.match.params.userId;
+  axios
+    .get("http://localhost:4000/ToDoList/savedList/" + userId)
+    .then((res) => {
+      if (res.data.success) {
+        console.log(res.data);
+        setSavedList(res.data.result);
+      } else {
+        alert(res.data.message);
+      }
+    })
+    .catch((err) => {
+      alert("no data");
+    });
 
   function handleChange(event) {
-    const newValue = event.target.value;
-    setInputText(newValue);
+    const { name, value } = event.target;
+
+    setInputText((prevNote) => {
+      return {
+        ...prevNote,
+        [name]: value,
+      };
+    });
   }
 
-  function addItem() {
+  function addItem(event) {
+    event.preventDefault();
+    console.log(inputText);
+    console.log(userId);
     setItems((prevItems) => {
       return [...prevItems, inputText];
     });
+
+    axios
+      .post("http://localhost:4000/ToDoList/list/" + userId, inputText)
+      .then((res) => {
+        if (res.status === 200) {
+          alert("added successfully");
+        } else {
+          alert("type something");
+        }
+      })
+      .catch((err) => {
+        alert("type Something");
+      });
     setInputText("");
   }
 
@@ -38,18 +78,24 @@ function MainPage() {
         <h1>To-Do List</h1>
       </div>
       <div className="form">
-        <input onChange={handleChange} type="text" value={inputText} />
+        <input
+          name="list"
+          onChange={handleChange}
+          type="text"
+          value={inputText.list || ""}
+          placeholder="Type here.."
+        />
         <button onClick={addItem}>
           <span>Add</span>
         </button>
       </div>
       <div>
         <ul>
-          {items.map((todoItem, index) => (
+          {savedlist.map((todoItem, index) => (
             <ToDoItem
               key={index}
               id={index}
-              text={todoItem}
+              text={todoItem.list}
               onChecked={deleteItem}
               onStrike={strikeItem}
             />

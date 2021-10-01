@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-let List = new Schema({
-  content: {
+let todolist = new Schema({
+  list: {
     type: String,
   },
   userId: {
@@ -9,4 +9,4 @@ let List = new Schema({
   },
 });
 
-module.exports = mongoose.model("List", List);
+module.exports = mongoose.model("todolist", todolist);

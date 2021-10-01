@@ -11,7 +11,7 @@ function ToDoItem(props) {
   return (
     <div>
       <li style={{ textDecoration: strike ? "line-through" : "none" }}>
-        {props.text}{" "}
+        {props.text}
       </li>
       <div>
         <button

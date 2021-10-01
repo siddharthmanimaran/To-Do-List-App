@@ -7,9 +7,9 @@ const PORT = process.env.PORT || 4000;
 const ToDoListRoutes = express.Router();
 const bcrypt = require("bcrypt");
 
-const List = require("./ToDoList.model");
+const todolist = require("./ToDoList.model");
 const newUser = require("./SignUp.model");
-const user = require("./logIn.model");
+// const user = require("./logIn.model");
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -82,7 +82,41 @@ ToDoListRoutes.route("/logIn").post((req, res) => {
   });
 });
 
+ToDoListRoutes.route("/list/:id").post(function (req, res) {
+  console.log("added list--->", req.body);
+  console.log("id", req.params.userId);
+  let newList = new todolist();
+  newList.list = req.body.list;
+  newList.userId = req.params.userId;
+  newList
+    .save()
+    .then((x) => {
+      res.status(200).json({ newList: "list added" });
+    })
+    .catch((err) => {
+      res.status(400).send({ newList: "fail to add" });
+      console.log(err);
+    });
+});
+
+ToDoListRoutes.route("/savedList/:id").get((req, res) => {
+  let id = req.params.id;
+  todolist.find({ userId: mongoose.Types.ObjectId(id) }, (err, data) => {
+    if (err) {
+      console.log(err);
+    }
+    if (data.length) {
+      console.log(data);
+      res.json({ success: true, result: data });
+    } else {
+      res.json({ success: false, result: data });
+    }
+  });
+});
+
 app.use("/ToDoList", ToDoListRoutes);
 app.use("/signUp", ToDoListRoutes);
 app.use("/logIn", ToDoListRoutes);
+app.use("/list/:userId", ToDoListRoutes);
+app.use("/savedList/id", ToDoListRoutes);
 app.listen(PORT, console.log(`Server started at port ${PORT}`));
